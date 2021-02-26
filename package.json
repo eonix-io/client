@@ -1,6 +1,6 @@
 {
   "name": "@eonix-io/client",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/eonix-io/client"
@@ -11,15 +11,16 @@
     "name": "Josh Kraker",
     "email": "joshkrak@gmail.com"
   },
-  "private": false,
   "license": "MIT",
   "scripts": {
     "clean": "rimraf ./dist/*",
     "build": "npm run clean && tsc",
     "lint": "eslint ./src/**/*.ts",
-    "build-version": "npm run clean && tsc && npm version patch && node lib/Build.js",
-    "publish": "npm run build-version && npm publish lib"
+    "publish": "npm run build"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@apollo/client": "^3.3.11",
     "graphql": "^15.5.0",
