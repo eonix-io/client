@@ -19,6 +19,7 @@
     "publish": "npm run build"
   },
   "files": [
+    "index.js",
     "dist"
   ],
   "dependencies": {
