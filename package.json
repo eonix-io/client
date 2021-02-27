@@ -1,11 +1,13 @@
 {
   "name": "@eonix-io/client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/eonix-io/client"
   },
-  "main": "./dist/index.js",
+  "type": "commonjs",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
   "description": "Client library for eonix.io graph api",
   "author": {
     "name": "Josh Kraker",
@@ -14,13 +16,12 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf ./dist/*",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc && tsc -p tsconfig-cjs.json",
     "lint": "eslint ./src/**/*.ts",
     "publish": "npm run build"
   },
   "files": [
-    "index.js",
-    "dist"
+    "dist/"
   ],
   "dependencies": {
     "@apollo/client": "^3.3.11",
