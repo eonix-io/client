@@ -15,6 +15,8 @@ export class EonixClient {
 
    public constructor(token: string | (() => string), options?: IClientOptions) {
 
+      if (!token) { throw new Error('Missing token'); }
+
       this._token = token;
       this._sessionId = uuid();
 
@@ -64,8 +66,27 @@ export class EonixClient {
    private removeTypenameAndFreeze<T>(src: T): T {
       if (!src) { return src; }
       const t = this.removeTypename(src);
-      Object.freeze(t);
+      this.deepFreeze(t);
       return t;
+   }
+
+   private deepFreeze(o: any) {
+      if (o === null || o === undefined) { return; }
+      if (typeof o !== 'object') { return; }
+
+      Object.freeze(o);
+
+      if (Array.isArray(o)) {
+         for (const i of o) {
+            this.deepFreeze(i);
+         }
+
+         return;
+      }
+
+      for (const p of Object.getOwnPropertyNames(o)) {
+         this.deepFreeze(o[p]);
+      }
    }
 
    //#region ApolloClient
