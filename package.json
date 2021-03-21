@@ -1,5 +1,6 @@
 {
   "name": "@eonix-io/client",
+  "description": "Client library for eonix.io graph api",
   "version": "1.0.3",
   "repository": {
     "type": "git",
@@ -8,7 +9,9 @@
   "type": "commonjs",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
-  "description": "Client library for eonix.io graph api",
+  "files": [
+    "dist/"
+  ],
   "author": {
     "name": "Josh Kraker",
     "email": "joshkrak@gmail.com"
@@ -20,9 +23,6 @@
     "lint": "eslint ./src/**/*.ts",
     "prepublishOnly": "npm run build"
   },
-  "files": [
-    "dist/"
-  ],
   "dependencies": {
     "@apollo/client": "^3.3.11",
     "graphql": "^15.5.0",
