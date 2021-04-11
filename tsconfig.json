@@ -12,5 +12,8 @@
         "noImplicitReturns": true,
         "noPropertyAccessFromIndexSignature": true,
         "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "removeComments": true,
+        "importHelpers": true
     }
 }
