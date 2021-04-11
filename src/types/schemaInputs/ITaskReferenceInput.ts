@@ -9,6 +9,6 @@ export interface ITaskReferenceInput extends IInputBase {
    readonly type: InputType.TaskReference;
 }
 
-export function isTaskReferenceInput(input: IInputBase): input is ITaskReferenceInput {
-   return input.type === InputType.TaskReference;
+export function isTaskReferenceInput<T = any>(input?: IInputBase<T> | null): input is ITaskReferenceInput {
+   return input?.type === InputType.TaskReference;
 }

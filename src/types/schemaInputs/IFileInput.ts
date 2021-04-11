@@ -16,6 +16,6 @@ export interface IFileInputOptions {
 
 }
 
-export function isFileInput(input: IInputBase): input is IFileInput {
-    return input.type === InputType.File;
+export function isFileInput<T = any>(input?: IInputBase<T> | null): input is IFileInput {
+    return input?.type === InputType.File;
 }

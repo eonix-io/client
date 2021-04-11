@@ -9,6 +9,6 @@ export interface IChecklistInput extends IInputBase {
    readonly type: InputType.Checklist;
 }
 
-export function isChecklistInput(input: IInputBase): input is IChecklistInput {
-   return input.type == InputType.Checklist;
+export function isChecklistInput<T = any>(input?: IInputBase<T> | null): input is IChecklistInput {
+   return input?.type == InputType.Checklist;
 }

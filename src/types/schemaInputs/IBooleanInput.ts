@@ -9,6 +9,6 @@ export interface IBooleanInput extends IInputBase {
     readonly type: InputType.Boolean;
 }
 
-export function isBooleanInput(input: IInputBase): input is IBooleanInput {
-    return input.type === InputType.Boolean;
+export function isBooleanInput<T = any>(input?: IInputBase<T> | null): input is IBooleanInput {
+    return input?.type === InputType.Boolean;
 }

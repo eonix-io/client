@@ -25,6 +25,6 @@ export interface ITextOptions {
     maxLength: number | null;
 }
 
-export function isTextInput(input: IInputBase): input is ITextInput {
-    return input.type === InputType.Text;
+export function isTextInput<T = any>(input?: IInputBase<T> | null): input is ITextInput {
+    return input?.type === InputType.Text;
 }

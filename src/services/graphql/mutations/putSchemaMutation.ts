@@ -6,7 +6,7 @@ import { EonixClient } from '../EonixClient';
 import { schemaFragment } from '../fragments';
 
 let mutation: DocumentNode | undefined;
-export async function putSchemaMutation(eonixClient: EonixClient, schemaInput: ISchemaInput, inputs: IInputBase[], boardId: UUID): Promise<void> {
+export async function putSchemaMutation<SchemaAppData = any, InputAppData = null>(eonixClient: EonixClient, schemaInput: ISchemaInput<SchemaAppData>, inputs: IInputBase<InputAppData>[], boardId: UUID): Promise<void> {
 
    if (!mutation) {
       mutation = gql`

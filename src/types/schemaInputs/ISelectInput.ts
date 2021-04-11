@@ -9,6 +9,6 @@ export interface ISelectInput extends IInputBase {
     readonly type: InputType.Select;
 }
 
-export function isSelectInput(input: IInputBase): input is ISelectInput {
-    return input.type === InputType.Select;
+export function isSelectInput<T = any>(input?: IInputBase<T> | null): input is ISelectInput {
+    return input?.type === InputType.Select;
 }
