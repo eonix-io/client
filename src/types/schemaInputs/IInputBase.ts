@@ -10,8 +10,9 @@ export enum InputType {
     TaskReference = 'taskReference'
 }
 
-export interface IInputBase {
+export interface IInputBase<AppDataType = null> {
     id: UUID;
     name: string;
     type: InputType;
+    appData: AppDataType | null;
 }

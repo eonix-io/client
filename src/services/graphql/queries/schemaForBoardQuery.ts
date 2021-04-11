@@ -4,7 +4,7 @@ import { schemaFragment } from '../fragments';
 
 
 let _query: TypedDocumentNode | undefined;
-export function schemaForBoardQuery<T = any>(boardId: UUID): QueryOptions<{ boardId: UUID }, { schemaForBoard: ISchema<T> | null }> {
+export function schemaForBoardQuery<AppDataType = any, InputDataType = any>(boardId: UUID): QueryOptions<{ boardId: UUID }, { schemaForBoard: ISchema<AppDataType, InputDataType> | null }> {
    const query = _query ??= gql`
       query schemaForBoard($boardId: String!) { 
          schemaForBoard(boardId: $boardId) { 

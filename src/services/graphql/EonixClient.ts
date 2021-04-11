@@ -2,7 +2,7 @@
 import { ApolloClient, MutationOptions, QueryOptions, TypedDocumentNode } from '@apollo/client/core';
 import { InMemoryCache, NormalizedCacheObject } from '@apollo/client/cache';
 import { uuid } from '../uuid';
-import { IGraphQueryUpdate, UpdateType } from '../../types';
+import { IGraphQueryUpdate, UpdateType, UUID } from '../../types';
 import { io } from 'socket.io-client';
 
 export { QueryOptions } from '@apollo/client/core';
@@ -36,8 +36,8 @@ export class EonixClient {
    }
 
    /** Extract the userId from the token */
-   public get tokenUserId(): string {
-      return this.token;
+   public get tokenUserId(): UUID {
+      return this.token as UUID;
    }
 
    public watchQuery<TVar, TData>(query: QueryOptions<TVar, TData>): Observable<TData> {

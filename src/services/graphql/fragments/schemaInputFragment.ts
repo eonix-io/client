@@ -5,6 +5,7 @@ export const schemaInputFragment = gql`
         id
         name
         type
+        appData
         ... on TextInput {
             options {
                 type
