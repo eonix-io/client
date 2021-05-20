@@ -10,4 +10,4 @@ export * from './IFileValue';
 export * from './IListValue';
 export * from './ITaskReferenceValue';
 
-export type IValue = IScalarValue | IFileValue | IListValue | ITaskReferenceValue;
+export type IValue<AppDataType = any> = IScalarValue<AppDataType> | IFileValue<AppDataType> | IListValue<AppDataType> | ITaskReferenceValue<AppDataType>;

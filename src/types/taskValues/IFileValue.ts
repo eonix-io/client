@@ -1,6 +1,6 @@
 import { IValueBase, ValueType } from './IValueBase';
 
-export interface IFileValue extends IValueBase {
+export interface IFileValue<AppDataType = any> extends IValueBase<AppDataType> {
     readonly type: ValueType.File;
     value: IFileProperties
 }

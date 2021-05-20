@@ -8,14 +8,15 @@ export interface ITaskSortInput {
     sort: number | null;
 }
 
-export interface ITask {
+export interface ITask<AppDataType = any, ValueAppDataType = any> {
 
     id: UUID;
     boardId: UUID;
     sort: number | null;
     createdBy: UUID;
     createdDate: number;
-    values: IValue[];
+    values: IValue<ValueAppDataType>[];
+    appData: AppDataType | null;
 
     /** Additional schema that is additional to the Board's schema but specific to this Task */
     taskSchema: ITaskSchema | null;
@@ -35,15 +36,16 @@ export interface ITask {
     } | null
 }
 
-export interface ITaskInput {
+export interface ITaskInput<AppDataType = any, ValueAppDataType = any> {
     id: UUID;
     boardId: UUID;
     sort: number | null;
+    appData: AppDataType | null;
 
-    scalarValues?: IScalarValue[] | null;
-    fileValues?: IFileValue[] | null;
-    listValues?: IListValue[] | null;
-    taskReferenceValues?: ITaskReferenceValue[] | null;
+    scalarValues?: IScalarValue<ValueAppDataType>[] | null;
+    fileValues?: IFileValue<ValueAppDataType>[] | null;
+    listValues?: IListValue<ValueAppDataType>[] | null;
+    taskReferenceValues?: ITaskReferenceValue<ValueAppDataType>[] | null;
 
     taskSchema: ITaskSchemaInput | null;
 
@@ -71,12 +73,12 @@ export interface ITaskSchemaInput {
 
 }
 
-export function taskToTaskInput(task: ITask): ITaskInput {
+export function taskToTaskInput<AppDataType = any, ValueAppDataType = any>(task: ITask<AppDataType, ValueAppDataType>): ITaskInput<AppDataType, ValueAppDataType> {
 
-    const { scalarValues, fileValues, listValues, taskReferenceValues } = taskValuesToValueInputs(task.values);
+    const { scalarValues, fileValues, listValues, taskReferenceValues } = taskValuesToValueInputs<ValueAppDataType>(task.values);
     const taskSchema = taskSchemaToSchemaInput(task.taskSchema);
 
-    const input: ITaskInput = {
+    const input: ITaskInput<AppDataType> = {
         id: task.id,
         boardId: task.boardId,
         sort: task.sort,
@@ -85,19 +87,20 @@ export function taskToTaskInput(task: ITask): ITaskInput {
         listValues,
         taskSchema,
         taskReferenceValues,
-        sourceDelegate: task.sourceDelegate
+        sourceDelegate: task.sourceDelegate,
+        appData: task.appData
     };
 
     return input;
 
 }
 
-function taskValuesToValueInputs(values: IValue[]): { scalarValues: IScalarValue[], fileValues: IFileValue[], listValues: IListValue[], taskReferenceValues: ITaskReferenceValue[] } {
+function taskValuesToValueInputs<ValueAppDataType = any>(values: IValue<ValueAppDataType>[]): { scalarValues: IScalarValue<ValueAppDataType>[], fileValues: IFileValue<ValueAppDataType>[], listValues: IListValue<ValueAppDataType>[], taskReferenceValues: ITaskReferenceValue<ValueAppDataType>[] } {
 
-    const fileValues: IFileValue[] = [];
-    const scalarValues: IScalarValue[] = [];
-    const listValues: IListValue[] = [];
-    const taskReferenceValues: ITaskReferenceValue[] = [];
+    const fileValues: IFileValue<ValueAppDataType>[] = [];
+    const scalarValues: IScalarValue<ValueAppDataType>[] = [];
+    const listValues: IListValue<ValueAppDataType>[] = [];
+    const taskReferenceValues: ITaskReferenceValue<ValueAppDataType>[] = [];
 
     values.forEach(v => {
         const clone = deepClone(v);
@@ -168,7 +171,7 @@ function taskSchemaToSchemaInput(schema: ITaskSchema | null): ITaskSchemaInput |
 
 }
 
-export function taskInputToTask(taskInput: ITaskInput, createdBy: UUID, createdDate: number): ITask {
+export function taskInputToTask<AppDataType = any, ValueAppDataType = any>(taskInput: ITaskInput<AppDataType, ValueAppDataType>, createdBy: UUID, createdDate: number): ITask<AppDataType, ValueAppDataType> {
 
     const { scalarValues, fileValues, listValues, taskSchema, taskReferenceValues, ...taskBase } = taskInput;
 
@@ -178,7 +181,8 @@ export function taskInputToTask(taskInput: ITaskInput, createdBy: UUID, createdD
         taskSchema: taskSchemaInputToSchema(taskSchema),
         createdBy,
         createdDate,
-        sourceDelegate: taskInput.sourceDelegate
+        sourceDelegate: taskInput.sourceDelegate,
+        appData: taskInput.appData
     };
 }
 

@@ -1,6 +1,6 @@
 import { IValueBase, ValueType } from './IValueBase';
 
-export interface IListValue extends IValueBase {
+export interface IListValue<AppDataType = any> extends IValueBase<AppDataType> {
    readonly type: ValueType.List;
    values: string[];
 }

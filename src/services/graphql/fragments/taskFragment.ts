@@ -6,11 +6,12 @@ export const taskFragment = gql`
             id,
             boardId,
             sort,
+            appData,
             values {
                id
                inputId
                type
-               metadata
+               appData
                ... on ScalarValue {
                      value {
                         type

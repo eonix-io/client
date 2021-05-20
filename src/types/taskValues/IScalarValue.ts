@@ -1,6 +1,6 @@
 import { IValueBase, ValueType } from './IValueBase';
 
-export interface IScalarValue extends IValueBase {
+export interface IScalarValue<AppDataType = any> extends IValueBase<AppDataType> {
     readonly type: ValueType.Scalar;
     value: IScalarValueValue
 }

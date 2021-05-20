@@ -3,7 +3,7 @@ import { UUID } from '..';
 import { IValueBase, ValueType } from './IValueBase';
 
 /** Details of a task that is linked to an existing task. Values cannot be changed once created. */
-export interface ITaskReferenceValue extends IValueBase {
+export interface ITaskReferenceValue<AppDataType = any> extends IValueBase<AppDataType> {
    readonly type: ValueType.TaskReference;
    /** The id of the remote task that this input value is referencing */
    readonly taskId: UUID;

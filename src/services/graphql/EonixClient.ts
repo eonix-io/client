@@ -40,7 +40,7 @@ export class EonixClient {
       return this.token as UUID;
    }
 
-   public watchQuery<TVar, TData>(query: QueryOptions<TVar, TData>): Observable<TData> {
+   public watchQuery<TVar, TData>(query: QueryOptions<TVar, TData>): ObservableQuery<Readonly<TData>> {
       const query$ = this.apolloClient.watchQuery<TData>(query);
       return {
          subscribe: (callback: (result: TData) => void) => {
@@ -49,6 +49,15 @@ export class EonixClient {
                callback(froze);
             });
             return { unsubscribe: () => sub.unsubscribe() };
+         },
+         asPromise() {
+            const prom = new Promise<Readonly<TData>>(r => {
+               const sub = this.subscribe(t => {
+                  r(t);
+                  setTimeout(sub.unsubscribe);
+               });
+            });
+            return prom;
          }
       };
    }
@@ -305,6 +314,10 @@ type ObservableCallback<T> = (result: T) => void;
 
 export interface Observable<T> {
    subscribe: (callback: ObservableCallback<T>) => Subscription;
+}
+
+export interface ObservableQuery<T> extends Observable<T> {
+   asPromise: () => Promise<T>;
 }
 
 export interface Subscription {
