@@ -11,6 +11,7 @@ export * from './putGrantMutation';
 export * from './inviteEmailToBoardMutation';
 export * from './putSchemaMutation';
 export * from './putTaskMutation';
+export * from './putTasksMutation';
 export * from './deleteTaskMutation';
 export * from './sortTasksMutation';
 export * from './putUxMutation';

@@ -6,7 +6,7 @@ export interface IScalarValue<AppDataType = any> extends IValueBase<AppDataType>
 }
 
 export interface IScalarValueValue {
-    type?: 'string' | 'number' | 'boolean' | null;
+    type: 'string' | 'number' | 'boolean';
     value: string | null;
 }
 
