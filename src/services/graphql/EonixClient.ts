@@ -1,4 +1,5 @@
-
+import * as FormData from 'form-data';
+import axios from 'axios';
 import { ApolloClient, MutationOptions, QueryOptions, TypedDocumentNode } from '@apollo/client/core';
 import { InMemoryCache, NormalizedCacheObject } from '@apollo/client/cache';
 import { uuid } from '../uuid';
@@ -300,6 +301,33 @@ export class EonixClient {
          this._isProcessingUpdateQueue = false;
       }
    }
+
+   //#endregion
+
+   //#region REST
+
+   /** Uploads a file that is to be used within a link/image in a markdown field of a task. Returns the relative path of the uploaded file */
+   public async uploadMarkdownFile(taskId: UUID, inputId: UUID, filename: string, buffer: Buffer): Promise<string> {
+
+      const formData = new FormData();
+      formData.append('file', buffer, { filename });
+
+      const apiUrl = new URL('/api/file/markdown', this._options.host);
+      apiUrl.search = new URLSearchParams({ taskId, inputId }).toString();
+
+      const res = await axios.post(apiUrl.toString(), formData, {
+         // You need to use `getHeaders()` in Node.js because Axios doesn't
+         // automatically set the multipart form boundary in Node.
+         headers: {
+            ...formData.getHeaders(),
+            'Authorization': this.token
+         }
+      });
+
+      return res.data;
+
+   }
+
 
    //#endregion
 

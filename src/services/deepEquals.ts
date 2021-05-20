@@ -8,10 +8,9 @@ export function deepEquals<T extends Record<string, any>, K extends keyof T>(a: 
    const aKeys = Object.getOwnPropertyNames(a).filter(k => !ignore.includes(k as any));
    const bKeys = Object.getOwnPropertyNames(b).filter(k => !ignore.includes(k as any));
 
-   if (aKeys.length !== bKeys.length) { return false; }
+   const allKeys = new Set([...aKeys, ...bKeys]);
 
-   for (const aKey of aKeys) {
-      if (!bKeys.includes(aKey)) { return false; }
+   for (const aKey of allKeys) {
 
       const aValue = a![aKey];
       const bValue = b![aKey];
