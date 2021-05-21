@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { gql, QueryOptions } from '@apollo/client/core';
 import { DocumentNode } from 'graphql';
 import { tasksForBoardQuery } from '..';
 import { deepClone } from '../..';
@@ -58,27 +58,38 @@ export async function putTasksMutation(eonixClient: EonixClient, taskInputs: ITa
       optimisticResponse,
       update(store, fetchResult) {
 
+         const cachedQueries: Map<string, { storeData: QueryOptionDataType<typeof tasksForBoardQuery> | null, boardQuery: ReturnType<typeof tasksForBoardQuery> }> = new Map();
+
          fetchResult.data?.putTasks.forEach(taskInput => {
 
-            const forBoardQuery = tasksForBoardQuery(taskInput.boardId);
+            let cacheEntry = cachedQueries.get(taskInput.boardId) ?? null;
+            if (!cacheEntry) {
+               const boardQuery = tasksForBoardQuery(taskInput.boardId);
+               const storeData = deepClone(store.readQuery(boardQuery));
+               cachedQueries.set(taskInput.boardId, cacheEntry = { storeData, boardQuery });
+            }
 
-            const storeData = store.readQuery(forBoardQuery);
-            if (storeData) {
-               const storeIndex = storeData.tasksForBoard.findIndex(b => b.id === taskInput.id);
-               const newStoreData = deepClone(storeData);
+            if (cacheEntry.storeData) {
+               const storeIndex = cacheEntry.storeData.tasksForBoard.findIndex(b => b.id === taskInput.id);
                if (storeIndex > -1) {
-                  newStoreData.tasksForBoard.splice(storeIndex, 1, taskInput);
+                  cacheEntry.storeData.tasksForBoard.splice(storeIndex, 1, taskInput);
                } else {
-                  newStoreData.tasksForBoard.push(taskInput);
+                  cacheEntry.storeData.tasksForBoard.push(taskInput);
                }
-               store.writeQuery({ ...forBoardQuery, data: newStoreData });
             }
          });
+
+         for (const query of cachedQueries.values()) {
+            store.writeQuery({ ...query.boardQuery, data: query.storeData });
+         }
+
       }
 
    });
 
 }
+
+type QueryOptionDataType<T> = T extends (...args: any[]) => QueryOptions<infer _, infer Y> ? Y : never;
 
 function createTaskWithTypenamesFromInput(taskInput: ITaskInput, createdById: UUID): ITask {
    const task = {

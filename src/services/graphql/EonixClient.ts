@@ -321,7 +321,9 @@ export class EonixClient {
          headers: {
             ...formData.getHeaders(),
             'Authorization': this.token
-         }
+         },
+         maxBodyLength: Infinity,
+         maxContentLength: Infinity
       });
 
       return res.data;
