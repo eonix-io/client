@@ -2,7 +2,7 @@ import { gql } from '@apollo/client/core';
 import { DocumentNode } from 'graphql';
 import { boardsQuery, grantsForEntityQuery } from '..';
 import { IBoardCopyOptions, UUID } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 
 let mutation: DocumentNode | undefined;
 export async function copyBoardMutation(eonixClient: EonixClient, boardId: UUID, options: IBoardCopyOptions): Promise<void> {

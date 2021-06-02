@@ -3,7 +3,7 @@ import { DocumentNode } from 'graphql';
 import { delegateFullFragment, delegatesForBoardQuery } from '..';
 import { deepClone } from '../..';
 import { delegateInputToDelegate, IDelegatePendingInput } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 
 let mutation: DocumentNode | undefined;
 export async function putDelegatePendingMutation(eonixClient: EonixClient, delegate: IDelegatePendingInput): Promise<void> {

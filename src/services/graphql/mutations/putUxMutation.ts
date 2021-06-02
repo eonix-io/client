@@ -3,7 +3,7 @@ import { DocumentNode } from 'graphql';
 import { uxFragment } from '..';
 import { deepClone } from '../..';
 import { IUxInput, uxInputToUx } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 import { uxQuery, uxsForBoardQuery } from '../queries';
 
 let mutation: DocumentNode | undefined;

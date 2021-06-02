@@ -2,7 +2,7 @@ import { gql } from '@apollo/client/core';
 import { DocumentNode } from 'graphql';
 import { tasksForBoardQuery } from '..';
 import { UUID } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 
 let mutation: DocumentNode | undefined;
 export async function deleteTaskMutation(eonixClient: EonixClient, taskId: UUID, boardId: UUID): Promise<void> {

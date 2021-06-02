@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { DocumentNode } from 'graphql';
 import { ITask, ITaskSortInput, UUID } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 import { taskFragment } from '../fragments';
 
 let mutation: DocumentNode | undefined;

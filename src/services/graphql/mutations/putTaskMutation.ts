@@ -3,7 +3,7 @@ import { DocumentNode } from 'graphql';
 import { tasksForBoardQuery } from '..';
 import { deepClone } from '../..';
 import { isChecklistInput, isFileInput, isFileValue, isListValue, isScalarValue, isSelectInput, isTaskReferenceInput, isTaskReferenceValue, isTextInput, ITask, ITaskInput, taskInputToTask, UUID } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 import { taskFragment } from '../fragments';
 
 let mutation: DocumentNode | undefined;

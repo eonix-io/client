@@ -2,17 +2,19 @@ import * as FormData from 'form-data';
 import axios from 'axios';
 import { ApolloClient, MutationOptions, QueryOptions, TypedDocumentNode } from '@apollo/client/core';
 import { InMemoryCache, NormalizedCacheObject } from '@apollo/client/cache';
-import { uuid } from '../uuid';
-import { IGraphQueryUpdate, UpdateType, UUID } from '../../types';
-import { io } from 'socket.io-client';
+import { uuid } from './uuid';
+import { IGraphQueryUpdate, IObservableQuery, ISubscription, ObservableCallback, UpdateType, UUID } from '../types';
+import { SocketClient } from './SocketClient';
+import { IConnectionEvent, IObservable } from '..';
 
 export { QueryOptions } from '@apollo/client/core';
 
 export class EonixClient {
 
    private _token: string | (() => string);
-   private readonly _options: Required<IClientOptions>;
    private readonly _sessionId: string;
+   private readonly _options: Required<IClientOptions>;
+   private readonly _socketClient: SocketClient;
 
    public constructor(token: string | (() => string), options?: IClientOptions) {
 
@@ -27,7 +29,9 @@ export class EonixClient {
 
       if (this._options.host.endsWith('/')) { throw new Error('Host should not have a trailing slash'); }
 
-      this.startSocket();
+      this._socketClient = new SocketClient(token, { host: this._options.host });
+
+      this._socketClient.queryUpdates.subscribe(update => this.processUpdate(update));
 
    }
 
@@ -41,10 +45,10 @@ export class EonixClient {
       return this.token as UUID;
    }
 
-   public watchQuery<TVar, TData>(query: QueryOptions<TVar, TData>): ObservableQuery<Readonly<TData>> {
+   public watchQuery<TVar, TData>(query: QueryOptions<TVar, TData>): IObservableQuery<Readonly<TData>> {
       const query$ = this.apolloClient.watchQuery<TData>(query);
       return {
-         subscribe: (callback: (result: TData) => void) => {
+         subscribe: (callback: ObservableCallback<Readonly<TData>>): ISubscription => {
             const sub = query$.subscribe(result => {
                const froze = this.removeTypenameAndFreeze(result.data);
                callback(froze);
@@ -190,49 +194,11 @@ export class EonixClient {
 
    //#region SocketIO
 
-   private readonly _connectionEventSubscriptions: ObservableCallback<boolean>[] = [];
-   private _connectionEvents$: Observable<boolean> = {
-      subscribe: (cb) => {
-         this._connectionEventSubscriptions.push(cb);
-
-         return {
-            unsubscribe: () => {
-               const i = this._connectionEventSubscriptions.findIndex(c => c === cb);
-               this._connectionEventSubscriptions.slice(i, 1);
-            }
-         };
-      }
-   }
-
-   /** Get a observable that emits true when a realtime server connection is made and false if it gets dropped */
-   public get realtimeConnectionEvents(): Observable<boolean> { return this._connectionEvents$; }
-
-   private startSocket(): void {
-
-      const socket = io(this._options.host.replace(/https?:\/\//i, ''), {
-         query: {
-            userId: this.tokenUserId,
-            token: this.token,
-            sessionId: this._sessionId
-         }
-      });
-
-      socket.on('connect', () => {
-         this._connectionEventSubscriptions.forEach(cb => cb(true));
-      });
-
-      socket.on('disconnect', () => {
-         this._connectionEventSubscriptions.forEach(cb => cb(false));
-      });
-
-      socket.on('query-update', (data: IGraphQueryUpdate) => {
-         this.processUpdate(data);
-      });
-   }
+   public get socketEvents(): IObservable<IConnectionEvent> { return this._socketClient.socketEvents; }
 
    private _refreshQueue: { key: string, name: string, query: TypedDocumentNode, variables?: Record<string, any> }[] = [];
 
-   private async processUpdate(update: IGraphQueryUpdate,): Promise<void> {
+   private async processUpdate(update: IGraphQueryUpdate): Promise<void> {
 
       let updateQueries = update.queries;
 
@@ -302,7 +268,7 @@ export class EonixClient {
       }
    }
 
-   //#endregion
+   //#endregion SocketIO
 
    //#region REST
 
@@ -340,16 +306,3 @@ export interface IClientOptions {
    host?: string;
 }
 
-type ObservableCallback<T> = (result: T) => void;
-
-export interface Observable<T> {
-   subscribe: (callback: ObservableCallback<T>) => Subscription;
-}
-
-export interface ObservableQuery<T> extends Observable<T> {
-   asPromise: () => Promise<T>;
-}
-
-export interface Subscription {
-   unsubscribe: () => void
-}

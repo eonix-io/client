@@ -2,7 +2,7 @@ import { gql } from '@apollo/client/core';
 import { DocumentNode } from 'graphql';
 import { schemaForBoardQuery, schemaQuery } from '..';
 import { IInputBase, isBooleanInput, isChecklistInput, ISchema, ISchemaInput, isFileInput, isSelectInput, isTaskReferenceInput, isTextInput, schemaInputToSchema, UUID } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 import { schemaFragment } from '../fragments';
 
 let mutation: DocumentNode | undefined;

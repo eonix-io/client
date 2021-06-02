@@ -3,7 +3,7 @@ import { DocumentNode } from 'graphql';
 import { functionFragment, functionQuery, functionsForBoardQuery } from '..';
 import { deepClone } from '../..';
 import { IFunctionInput } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 
 let mutation: DocumentNode | undefined;
 export async function putFunctionMutation(eonixClient: EonixClient, functionInput: IFunctionInput): Promise<void> {

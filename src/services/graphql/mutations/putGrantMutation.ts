@@ -3,7 +3,7 @@ import { DocumentNode } from 'graphql';
 import { grantFullFragment } from '..';
 import { deepClone, uuid } from '../..';
 import { grantInputToGrant, IGrantFull, IGrantInput, UserStatus } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 import { grantsForBoardQuery, grantsForEntityQuery } from '../queries';
 
 let mutation: DocumentNode | undefined;

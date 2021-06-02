@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { DocumentNode } from 'graphql';
 import { boardInputToBoard, IBoardInput, UUID } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 import { boardFragment } from '../fragments';
 import { boardQuery, boardsQuery, grantsForEntityQuery } from '../queries';
 

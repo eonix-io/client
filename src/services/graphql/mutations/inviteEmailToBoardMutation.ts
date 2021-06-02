@@ -2,7 +2,7 @@ import { gql } from '@apollo/client/core';
 import { DocumentNode } from 'graphql';
 import { grantsForBoardQuery } from '..';
 import { GrantClaim, UUID } from '../../../types';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 import { userFullFragment } from '../fragments';
 
 let mutation: DocumentNode | undefined;

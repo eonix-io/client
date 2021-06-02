@@ -4,7 +4,7 @@ import { noteFragment, notesForEntityQuery } from '..';
 import { INoteInput, noteInputToNote } from '../../../types';
 import { deepClone } from '../../deepClone';
 import { uuidEmpty } from '../../uuid';
-import { EonixClient } from '../EonixClient';
+import { EonixClient } from '../../EonixClient';
 
 let mutation: DocumentNode | undefined;
 export async function addNoteMutation(eonixClient: EonixClient, noteInput: INoteInput): Promise<void> {
