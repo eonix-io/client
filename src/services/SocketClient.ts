@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 import { IGraphQueryUpdate, IObservable, ObservableCallback, UUID, uuid } from '..';
 
-export class SocketClient {
+export class SocketClient implements ISocketClient {
 
    private _token: string | (() => string);
    private readonly _sessionId: string;
@@ -92,6 +92,10 @@ export class SocketClient {
       socket.connect();
    }
 
+}
+
+export interface ISocketClient {
+   queryUpdates: SocketClient['queryUpdates'];
 }
 
 export interface ISocketOptions {

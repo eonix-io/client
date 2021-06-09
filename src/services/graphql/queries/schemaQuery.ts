@@ -1,12 +1,14 @@
-import { gql, QueryOptions, TypedDocumentNode } from '@apollo/client/core';
 
+
+import { DocumentNode, parse } from 'graphql';
+import { QueryOptions } from '../..';
 import { ISchema, UUID } from '../../../types';
 import { schemaFragment } from '../fragments';
 
 
-let _query: TypedDocumentNode | undefined;
+let _query: DocumentNode | undefined;
 export function schemaQuery<AppDataType = any, InputDataType = any>(schemaId: UUID): QueryOptions<{ schemaId: UUID }, { schema: ISchema<AppDataType, InputDataType> | null }> {
-   const query = _query ??= gql`
+   const query = _query ??= parse(`
       query schema($schemaId: String!) { 
          schema(schemaId: $schemaId) { 
             ...SchemaFragment
@@ -14,7 +16,7 @@ export function schemaQuery<AppDataType = any, InputDataType = any>(schemaId: UU
       }
 
       ${schemaFragment}
-   `;
+   `);
 
    return {
       query,

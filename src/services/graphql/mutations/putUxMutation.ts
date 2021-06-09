@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { uxFragment } from '..';
 import { deepClone } from '../..';
@@ -10,7 +10,7 @@ let mutation: DocumentNode | undefined;
 export async function putUxMutation(eonixClient: EonixClient, uxInput: IUxInput): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation putUx($ux: UxInput) {
             putUx(ux: $ux) {
                ...UxFragment
@@ -18,7 +18,7 @@ export async function putUxMutation(eonixClient: EonixClient, uxInput: IUxInput)
          }
 
          ${uxFragment}
-      `;
+      `);
    }
 
    const variables = {

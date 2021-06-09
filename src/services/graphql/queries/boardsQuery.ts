@@ -1,13 +1,14 @@
-import { gql, QueryOptions, TypedDocumentNode } from '@apollo/client/core';
-import { boardFragment } from '../..';
+
+import { DocumentNode, parse } from 'graphql';
+import { boardFragment, QueryOptions } from '../..';
 import { IBoard } from '../../../types';
 
 
 type QueryResult = { boards: IBoard[] }
 
-let _query: TypedDocumentNode | undefined;
+let _query: DocumentNode | undefined;
 export function boardsQuery(): QueryOptions<undefined, QueryResult> {
-   const query = _query ??= gql`
+   const query = _query ??= parse(`
       query boards {
          boards {
             ...BoardFragment
@@ -15,7 +16,7 @@ export function boardsQuery(): QueryOptions<undefined, QueryResult> {
       }
 
       ${boardFragment}
-   `;
+   `);
 
    return {
       query

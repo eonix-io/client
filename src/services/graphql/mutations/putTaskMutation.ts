@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { tasksForBoardQuery } from '..';
 import { deepClone } from '../..';
@@ -10,7 +10,7 @@ let mutation: DocumentNode | undefined;
 export async function putTaskMutation(eonixClient: EonixClient, taskInput: ITaskInput): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation putTask($task: TaskInput!) { 
             putTask(task: $task) {
                   ...TaskFragment
@@ -18,7 +18,7 @@ export async function putTaskMutation(eonixClient: EonixClient, taskInput: ITask
          }
 
          ${taskFragment}
-      `;
+      `);
    }
 
    const variables = {

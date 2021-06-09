@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { boardInputToBoard, IBoardInput, UUID } from '../../../types';
 import { EonixClient } from '../../EonixClient';
@@ -9,7 +9,7 @@ let mutation: DocumentNode | undefined;
 export async function putBoardMutation(eonixClient: EonixClient, boardId: UUID, board: IBoardInput): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation putBoard($boardId: String!, $board: BoardInput!) { 
             putBoard(boardId: $boardId, board: $board) {
                ...BoardFragment
@@ -17,7 +17,7 @@ export async function putBoardMutation(eonixClient: EonixClient, boardId: UUID, 
          }
 
          ${boardFragment}
-      `;
+      `);
    }
 
    const variables = {

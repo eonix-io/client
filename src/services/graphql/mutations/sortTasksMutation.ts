@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { ITask, ITaskSortInput, UUID } from '../../../types';
 import { EonixClient } from '../../EonixClient';
@@ -8,11 +8,11 @@ let mutation: DocumentNode | undefined;
 export async function sortTasksMutation(eonixClient: EonixClient, boardId: UUID, taskSorts: ITaskSortInput[]): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation sortTasks($boardId: String!, $taskSorts: [TaskSortInput!]!) { 
             sortTasks(boardId: $boardId, taskSorts: $taskSorts)
          }
-      `;
+      `);
    }
 
    const variables = {

@@ -1,12 +1,14 @@
-import { gql, QueryOptions, TypedDocumentNode } from '@apollo/client/core';
 
+
+import { DocumentNode, parse } from 'graphql';
+import { QueryOptions } from '../..';
 import { IUx, UUID } from '../../../types';
 import { uxFragment } from '../fragments';
 
 
-let _query: TypedDocumentNode | undefined;
+let _query: DocumentNode | undefined;
 export function uxQuery(uxId: UUID): QueryOptions<{ uxId: UUID }, { ux: IUx | null }> {
-   const query = _query ??= gql`
+   const query = _query ??= parse(`
       query ux($uxId: String!) {
          ux(uxId: $uxId) {
             ...UxFragment
@@ -14,7 +16,7 @@ export function uxQuery(uxId: UUID): QueryOptions<{ uxId: UUID }, { ux: IUx | nu
       }
 
       ${uxFragment}
-   `;
+   `);
 
    return {
       query,

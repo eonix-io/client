@@ -19,5 +19,8 @@
             "ESNext",
             "DOM"
         ]
-    }
+    },
+    "exclude": [
+        "src/**/*.test.ts"
+    ]
 }

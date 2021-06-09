@@ -1,7 +1,7 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { schemaInputFragment } from './schemaInputFragment';
 
-export const taskFragment = gql`
+export const taskFragment = parse(`
     fragment TaskFragment on Task {
             id,
             boardId,
@@ -44,4 +44,4 @@ export const taskFragment = gql`
     }
 
     ${schemaInputFragment}
-`;
+`);

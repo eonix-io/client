@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { noteFragment, notesForEntityQuery } from '..';
 import { INoteInput, noteInputToNote } from '../../../types';
@@ -10,7 +10,7 @@ let mutation: DocumentNode | undefined;
 export async function addNoteMutation(eonixClient: EonixClient, noteInput: INoteInput): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation addNote($note: NoteInput!) {
             addNote(note: $note) {
                ...NoteFragment
@@ -18,7 +18,7 @@ export async function addNoteMutation(eonixClient: EonixClient, noteInput: INote
          }
 
          ${noteFragment}
-      `;
+      `);
    }
 
    const variables = {

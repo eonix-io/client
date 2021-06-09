@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { UUID } from '../../../types';
 import { EonixClient } from '../../EonixClient';
@@ -8,11 +8,11 @@ let mutation: DocumentNode | undefined;
 export async function deleteUxMutation(eonixClient: EonixClient, boardId: UUID, uxId: UUID): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation deleteUx($uxId: String!) { 
             deleteUx(uxId: $uxId)
          }
-      `;
+      `);
    }
 
    const variables = {

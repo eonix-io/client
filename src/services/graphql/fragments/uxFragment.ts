@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 
-export const uxFragment = gql`
+export const uxFragment = parse(`
    fragment UxFragment on Ux {
       id
       boardId
@@ -11,4 +11,4 @@ export const uxFragment = gql`
       createdBy
       createdDate
    }
-`;
+`);

@@ -1,9 +1,11 @@
-import { gql, QueryOptions, TypedDocumentNode } from '@apollo/client/core';
+
+import { DocumentNode, parse } from 'graphql';
+import { QueryOptions } from '../..';
 import { IFunctionExecutionSummary, UUID } from '../../../types';
 
-let _query: TypedDocumentNode | undefined;
+let _query: DocumentNode | undefined;
 export function functionExecuteQuery(functionId: UUID): QueryOptions<{ functionId: UUID }, { functionExecute: IFunctionExecutionSummary | null }> {
-   const query = _query ??= gql`
+   const query = _query ??= parse(`
       query functionExecute($functionId: String!) {
          functionExecute(functionId: $functionId) {
             id
@@ -13,7 +15,7 @@ export function functionExecuteQuery(functionId: UUID): QueryOptions<{ functionI
             result
          }
       }
-   `;
+   `);
 
    return {
       query,

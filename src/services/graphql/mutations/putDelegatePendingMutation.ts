@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { delegateFullFragment, delegatesForBoardQuery } from '..';
 import { deepClone } from '../..';
@@ -9,7 +9,7 @@ let mutation: DocumentNode | undefined;
 export async function putDelegatePendingMutation(eonixClient: EonixClient, delegate: IDelegatePendingInput): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation putDelegatePending($delegate: DelegatePendingInput!) {
             putDelegatePending(delegate: $delegate) {
                ...DelegateFullFragment
@@ -17,7 +17,7 @@ export async function putDelegatePendingMutation(eonixClient: EonixClient, deleg
          }
 
          ${delegateFullFragment}
-      `;
+      `);
    }
 
    const variables = {

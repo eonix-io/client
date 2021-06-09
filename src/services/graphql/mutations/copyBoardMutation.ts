@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { boardsQuery, grantsForEntityQuery } from '..';
 import { IBoardCopyOptions, UUID } from '../../../types';
@@ -8,11 +8,11 @@ let mutation: DocumentNode | undefined;
 export async function copyBoardMutation(eonixClient: EonixClient, boardId: UUID, options: IBoardCopyOptions): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation copyBoard($boardId: String!, $options: BoardCopyOptions!) {
             copyBoard(boardId: $boardId, options: $options)
          }
-      `;
+      `);
    }
 
    const variables = {

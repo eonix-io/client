@@ -1,12 +1,14 @@
-import { gql, QueryOptions, TypedDocumentNode } from '@apollo/client/core';
 
+
+import { DocumentNode, parse } from 'graphql';
+import { QueryOptions } from '../..';
 import { ITask, UUID } from '../../../types';
 import { taskFragment } from '../fragments';
 
 
-let _query: TypedDocumentNode | undefined;
+let _query: DocumentNode | undefined;
 export function taskQuery<AppDataType = any, ValueAppDataType = any>(taskId: UUID): QueryOptions<{ taskId: UUID }, { task: ITask<AppDataType, ValueAppDataType> | null }> {
-   const query = _query ??= gql`
+   const query = _query ??= parse(`
       query task($taskId: String!) { 
          task(taskId: $taskId) { 
                ...TaskFragment
@@ -14,7 +16,7 @@ export function taskQuery<AppDataType = any, ValueAppDataType = any>(taskId: UUI
       }
 
       ${taskFragment}
-   `;
+   `);
 
    return {
       query,

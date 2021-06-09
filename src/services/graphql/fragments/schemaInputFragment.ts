@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 
-export const schemaInputFragment = gql`
+export const schemaInputFragment = parse(`
     fragment SchemaInputFragment on Input {
         id
         name
@@ -42,4 +42,4 @@ export const schemaInputFragment = gql`
             destinationBoardIds
         }
     }
-`;
+`);

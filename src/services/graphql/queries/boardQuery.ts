@@ -1,11 +1,13 @@
-import { gql, QueryOptions, TypedDocumentNode } from '@apollo/client/core';
+
+import { DocumentNode, parse } from 'graphql';
 import { boardFragment } from '../..';
 import { IBoard, UUID } from '../../../types';
+import { IQueryOptions } from '../client/IQueryOptions';
 
 
-let _query: TypedDocumentNode | undefined;
-export function boardQuery<T>(boardId: UUID): QueryOptions<{ boardId: UUID }, { board: IBoard<T> | null }> {
-   const query = _query ??= gql`
+let _query: DocumentNode | undefined;
+export function boardQuery<T>(boardId: UUID): IQueryOptions<{ boardId: UUID }, { board: IBoard<T> | null }> {
+   const query = _query ??= parse(`
       query board($boardId: String!) { 
          board(boardId: $boardId) { 
             ...BoardFragment
@@ -13,7 +15,7 @@ export function boardQuery<T>(boardId: UUID): QueryOptions<{ boardId: UUID }, { 
       },
 
       ${boardFragment}
-   `;
+   `);
 
    return {
       query,

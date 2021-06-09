@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { functionFragment, functionQuery, functionsForBoardQuery } from '..';
 import { deepClone } from '../..';
@@ -9,7 +9,7 @@ let mutation: DocumentNode | undefined;
 export async function putFunctionMutation(eonixClient: EonixClient, functionInput: IFunctionInput): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation PutFunction($function: FunctionInput!) { 
             putFunction(function: $function) {
                ...FunctionFull
@@ -17,7 +17,7 @@ export async function putFunctionMutation(eonixClient: EonixClient, functionInpu
          }
 
          ${functionFragment}
-      `;
+      `);
    }
 
    const variables = {

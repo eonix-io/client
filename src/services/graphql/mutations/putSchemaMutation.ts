@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { schemaForBoardQuery, schemaQuery } from '..';
 import { IInputBase, isBooleanInput, isChecklistInput, ISchema, ISchemaInput, isFileInput, isSelectInput, isTaskReferenceInput, isTextInput, schemaInputToSchema, UUID } from '../../../types';
@@ -9,7 +9,7 @@ let mutation: DocumentNode | undefined;
 export async function putSchemaMutation<SchemaAppData = any, InputAppData = null>(eonixClient: EonixClient, schemaInput: ISchemaInput<SchemaAppData>, inputs: IInputBase<InputAppData>[], boardId: UUID): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation putSchema($schema: SchemaInput!, $inputsJson: String) { 
             putSchema(schema: $schema, inputsJson: $inputsJson) {
                ...SchemaFragment
@@ -17,7 +17,7 @@ export async function putSchemaMutation<SchemaAppData = any, InputAppData = null
          }
 
          ${schemaFragment}
-      `;
+      `);
    }
 
    const variables = {

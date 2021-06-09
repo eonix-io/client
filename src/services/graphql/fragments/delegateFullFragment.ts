@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 
-export const delegateFullFragment = gql`
+export const delegateFullFragment = parse(`
    fragment DelegateFullFragment on DelegateOrPending {
       ... on Delegate {
          id
@@ -39,4 +39,4 @@ export const delegateFullFragment = gql`
          createdDate
       }
    }
-`;
+`);

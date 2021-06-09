@@ -1,7 +1,7 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { userFullFragment } from './userFullFragment';
 
-export const grantFullFragment = gql`
+export const grantFullFragment = parse(`
    fragment GrantFullFragment on Grant {
       id
       boardId
@@ -19,4 +19,4 @@ export const grantFullFragment = gql`
    }
 
    ${userFullFragment}
-`;
+`);

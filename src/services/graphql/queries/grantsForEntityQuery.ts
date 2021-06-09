@@ -1,11 +1,12 @@
-import { gql, QueryOptions, TypedDocumentNode } from '@apollo/client/core';
-import { grantFullFragment } from '../..';
+
+import { DocumentNode, parse } from 'graphql';
+import { grantFullFragment, QueryOptions } from '../..';
 import { IGrantFull, UUID } from '../../../types';
 
 
-let _query: TypedDocumentNode | undefined;
+let _query: DocumentNode | undefined;
 export function grantsForEntityQuery(entityId: UUID): QueryOptions<{ entityId: UUID }, { grantsForEntity: IGrantFull[] }> {
-   const query = _query ??= gql`
+   const query = _query ??= parse(`
       query grantsForEntity($entityId: String!) {
          grantsForEntity(entityId: $entityId) {
             ...GrantFullFragment
@@ -13,7 +14,7 @@ export function grantsForEntityQuery(entityId: UUID): QueryOptions<{ entityId: U
       }
 
       ${grantFullFragment}
-   `;
+   `);
 
    return {
       query,

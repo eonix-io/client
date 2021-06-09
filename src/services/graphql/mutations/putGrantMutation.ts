@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 import { DocumentNode } from 'graphql';
 import { grantFullFragment } from '..';
 import { deepClone, uuid } from '../..';
@@ -10,7 +10,7 @@ let mutation: DocumentNode | undefined;
 export async function putGrantMutation(eonixClient: EonixClient, grantInput: IGrantInput): Promise<void> {
 
    if (!mutation) {
-      mutation = gql`
+      mutation = parse(`
          mutation putGrant($grant: GrantInput!) {
             putGrant(grant: $grant) {
                ...GrantFullFragment
@@ -18,7 +18,7 @@ export async function putGrantMutation(eonixClient: EonixClient, grantInput: IGr
          }
 
          ${grantFullFragment}
-      `;
+      `);
    }
 
    const variables = {

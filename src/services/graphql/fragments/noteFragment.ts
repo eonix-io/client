@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 
-export const noteFragment = gql`
+export const noteFragment = parse(`
    fragment NoteFragment on Note {
       id
       entityId
@@ -8,4 +8,4 @@ export const noteFragment = gql`
       createdDate
       createdBy
    }
-`;
+`);

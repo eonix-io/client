@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client/core';
+import { parse } from 'graphql';
 
-export const functionFragment = gql`
+export const functionFragment = parse(`
    fragment FunctionFragment on Function {
       id
       boardId
@@ -12,4 +12,4 @@ export const functionFragment = gql`
       createdBy
       createdDate 
    }
-`;
+`);
